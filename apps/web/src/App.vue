@@ -1,15 +1,22 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router';
 import { ref } from 'vue';
+import { NInput, NSpace } from '@m/ui/src'
 const a = ref('a');
 </script>
 
 <template>
     <header>
         <div class="wrapper">
+            <n-input v-model="a" type="text" placeholder="基本的 Input" loading />
+            <n-input v-model="a" clearable placeholder="基本的 Input" />
+            <n-space vertical>
+                <n-input size="small" round placeholder="小" />
+                <n-input round placeholder="中" />
+                <n-input size="large" round placeholder="大" />
+            </n-space>
             <nav>
                 <RouterLink to="/">Home</RouterLink>
-                <RouterLink to="/about">About</RouterLink>
             </nav>
         </div>
     </header>

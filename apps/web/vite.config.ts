@@ -50,4 +50,9 @@ export default defineConfig({
             },
         },
     },
+    define: {
+        'process.env.NODE_ENV': `'${process.env.NODE_ENV}'`,
+        'process.env.TUSIMPLE': !!process.env.TUSIMPLE,
+        __DEV__: process.env.NODE_ENV !== 'production'
+    },
 });
