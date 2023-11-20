@@ -1,0 +1,6 @@
+{
+    "name": "@m/utils",
+    "version": "1.0.0",
+    "dependencies": {},
+    "main": "src/index.ts"
+}

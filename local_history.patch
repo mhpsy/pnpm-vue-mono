@@ -1,0 +1,597 @@
+Index: apps/web/src/index.ts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/apps/web/src/index.ts b/apps/web/src/index.ts
+new file mode 100644
+--- /dev/null	(date 1700482207263)
++++ b/apps/web/src/index.ts	(date 1700482207263)
+@@ -0,0 +1,3 @@
++import { add } from '@m/utils';
++
++console.log(add(1, 2));
+Index: apps/web/src/views/HomeView.vue
+===================================================================
+diff --git a/apps/web/src/views/HomeView.vue b/apps/web/src/views/HomeView.vue
+deleted file mode 100644
+--- a/apps/web/src/views/HomeView.vue	
++++ /dev/null	
+@@ -1,17 +0,0 @@
+-<script setup lang="ts">
+-import { getCaptcha } from '@/api/login/login';
+-
+-const click = () => {
+-    getCaptcha().then((res) => {
+-        console.log(res);
+-    });
+-};
+-</script>
+-
+-<template>
+-    <div>
+-        <div class="w-20 h-20 bg-amber-200 rounded-2xl" @click="click">request</div>
+-        <div class="text-cyan-400">123</div>
+-        <div class="text-ty-main">自定义的样式</div>
+-    </div>
+-</template>
+Index: apps/web/src/App.vue
+===================================================================
+diff --git a/apps/web/src/App.vue b/apps/web/src/App.vue
+deleted file mode 100644
+--- a/apps/web/src/App.vue	
++++ /dev/null	
+@@ -1,82 +0,0 @@
+-<script setup lang="ts">
+-import { RouterLink, RouterView } from 'vue-router';
+-import { ref } from 'vue';
+-const a = ref('a');
+-</script>
+-
+-<template>
+-    <header>
+-        <div class="wrapper">
+-            <nav>
+-                <RouterLink to="/">Home</RouterLink>
+-                <RouterLink to="/about">About</RouterLink>
+-            </nav>
+-        </div>
+-    </header>
+-
+-    <RouterView />
+-</template>
+-
+-<style scoped>
+-header {
+-    line-height: 1.5;
+-    max-height: 100vh;
+-}
+-
+-.logo {
+-    display: block;
+-    margin: 0 auto 2rem;
+-}
+-
+-nav {
+-    width: 100%;
+-    font-size: 12px;
+-    text-align: center;
+-    margin-top: 2rem;
+-}
+-
+-nav a.router-link-exact-active {
+-    color: var(--color-text);
+-}
+-
+-nav a.router-link-exact-active:hover {
+-    background-color: transparent;
+-}
+-
+-nav a {
+-    display: inline-block;
+-    padding: 0 1rem;
+-    border-left: 1px solid var(--color-border);
+-}
+-
+-nav a:first-of-type {
+-    border: 0;
+-}
+-
+-@media (min-width: 1024px) {
+-    header {
+-        display: flex;
+-        place-items: center;
+-        padding-right: calc(var(--section-gap) / 2);
+-    }
+-
+-    .logo {
+-        margin: 0 2rem 0 0;
+-    }
+-
+-    header .wrapper {
+-        display: flex;
+-        place-items: flex-start;
+-        flex-wrap: wrap;
+-    }
+-
+-    nav {
+-        text-align: left;
+-        margin-left: -1rem;
+-        font-size: 1rem;
+-
+-        padding: 1rem 0;
+-        margin-top: 1rem;
+-    }
+-}
+-</style>
+Index: apps/web/src/api/login/login.ts
+===================================================================
+diff --git a/apps/web/src/api/login/login.ts b/apps/web/src/api/login/login.ts
+deleted file mode 100644
+--- a/apps/web/src/api/login/login.ts	
++++ /dev/null	
+@@ -1,16 +0,0 @@
+-// 获取验证码
+-// {"code":200,"msg":"获取成功", "b64": "", "tb64": "", "key": ""}
+-import { request } from '@/utils';
+-
+-function getCaptcha() {
+-    return request({
+-        url: '/user/captcha',
+-        headers: {
+-            isToken: false,
+-        },
+-        method: 'get',
+-        timeout: 20000,
+-    });
+-}
+-
+-export { getCaptcha };
+Index: apps/web/src/stores/counter.ts
+===================================================================
+diff --git a/apps/web/src/stores/counter.ts b/apps/web/src/stores/counter.ts
+deleted file mode 100644
+--- a/apps/web/src/stores/counter.ts	
++++ /dev/null	
+@@ -1,12 +0,0 @@
+-import { ref, computed } from 'vue';
+-import { defineStore } from 'pinia';
+-
+-export const useCounterStore = defineStore('counter', () => {
+-    const count = ref(0);
+-    const doubleCount = computed(() => count.value * 2);
+-    function increment() {
+-        count.value++;
+-    }
+-
+-    return { count, doubleCount, increment };
+-});
+Index: apps/web/src/utils/request/index.ts
+===================================================================
+diff --git a/apps/web/src/utils/request/index.ts b/apps/web/src/utils/request/index.ts
+deleted file mode 100644
+--- a/apps/web/src/utils/request/index.ts	
++++ /dev/null	
+@@ -1,15 +0,0 @@
+-import { getRequest } from '@m/utils';
+-
+-const request = getRequest(
+-    {
+-        baseURL: import.meta.env.VITE_BASE_API,
+-        timeout: 10000,
+-    },
+-    () => localStorage.getItem('token'),
+-    () => {
+-        localStorage.clear();
+-        window.location.reload();
+-    },
+-);
+-
+-export { request };
+Index: apps/web/src/utils/index.ts
+===================================================================
+diff --git a/apps/web/src/utils/index.ts b/apps/web/src/utils/index.ts
+deleted file mode 100644
+--- a/apps/web/src/utils/index.ts	
++++ /dev/null	
+@@ -1,1 +0,0 @@
+-export * from './request';
+Index: apps/web/src/main.ts
+===================================================================
+diff --git a/apps/web/src/main.ts b/apps/web/src/main.ts
+deleted file mode 100644
+--- a/apps/web/src/main.ts	
++++ /dev/null	
+@@ -1,13 +0,0 @@
+-import '@m/style';
+-import { createApp } from 'vue';
+-import { createPinia } from 'pinia';
+-
+-import App from './App.vue';
+-import router from './router';
+-
+-const app = createApp(App);
+-
+-app.use(createPinia());
+-app.use(router);
+-
+-app.mount('#app');
+Index: apps/web/src/router/index.ts
+===================================================================
+diff --git a/apps/web/src/router/index.ts b/apps/web/src/router/index.ts
+deleted file mode 100644
+--- a/apps/web/src/router/index.ts	
++++ /dev/null	
+@@ -1,15 +0,0 @@
+-import { createRouter, createWebHistory } from 'vue-router';
+-import HomeView from '../views/HomeView.vue';
+-
+-const router = createRouter({
+-    history: createWebHistory(import.meta.env.BASE_URL),
+-    routes: [
+-        {
+-            path: '/',
+-            name: 'home',
+-            component: HomeView,
+-        },
+-    ],
+-});
+-
+-export default router;
+Index: apps/web/package.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/apps/web/package.json b/apps/web/package.json
+--- a/apps/web/package.json	
++++ b/apps/web/package.json	(date 1700482711036)
+@@ -2,13 +2,6 @@
+     "name": "@m/web",
+     "version": "1.0.0",
+     "dependencies": {
+-        "@m/utils": "workspace:*",
+-        "@m/ui": "workspace:*",
+-        "@m/hooks": "workspace:*",
+-        "@m/locale": "workspace:*",
+-        "@m/style": "workspace:*"
+-    },
+-    "scripts": {
+-        "dev": "vite"
++        "@m/utils": "workspace:*"
+     }
+ }
+Index: apps/web/tsconfig.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/apps/web/tsconfig.json b/apps/web/tsconfig.json
+--- a/apps/web/tsconfig.json	
++++ b/apps/web/tsconfig.json	(date 1700482207266)
+@@ -1,15 +1,3 @@
+ {
+-    "extends": ["../../tsconfig.base.json", "@vue/tsconfig/tsconfig.dom.json"],
+-    "include": ["vue-shims.d.ts", "env.d.ts", "src/**/*", "src/**/*.vue"],
+-    "exclude": ["src/**/__tests__/*"],
+-    "compilerOptions": {
+-        "module": "ESNext",
+-        "composite": true,
+-        "baseUrl": ".",
+-        "paths": {
+-            "@/*": ["./src/*"]
+-        },
+-        "moduleResolution": "node",
+-        "verbatimModuleSyntax": false
+-    }
++    "extends": "../../tsconfig.base.json"
+ }
+Index: apps/web/env.d.ts
+===================================================================
+diff --git a/apps/web/env.d.ts b/apps/web/env.d.ts
+deleted file mode 100644
+--- a/apps/web/env.d.ts	
++++ /dev/null	
+@@ -1,1 +0,0 @@
+-/// <reference types="vite/client" />
+Index: apps/web/vitest.config.ts
+===================================================================
+diff --git a/apps/web/vitest.config.ts b/apps/web/vitest.config.ts
+deleted file mode 100644
+--- a/apps/web/vitest.config.ts	
++++ /dev/null	
+@@ -1,14 +0,0 @@
+-import { fileURLToPath } from 'node:url';
+-import { mergeConfig, defineConfig, configDefaults } from 'vitest/config';
+-import viteConfig from './vite.config';
+-
+-export default mergeConfig(
+-    viteConfig,
+-    defineConfig({
+-        test: {
+-            environment: 'jsdom',
+-            exclude: [...configDefaults.exclude, 'e2e/*'],
+-            root: fileURLToPath(new URL('./', import.meta.url)),
+-        },
+-    }),
+-);
+Index: apps/web/tailwind.config.cjs
+===================================================================
+diff --git a/apps/web/tailwind.config.cjs b/apps/web/tailwind.config.cjs
+deleted file mode 100644
+--- a/apps/web/tailwind.config.cjs	
++++ /dev/null	
+@@ -1,12 +0,0 @@
+-/** @type {import('tailwindcss').Config} */
+-export default {
+-    content: ['./src/**/*.html', './src/**/*.vue', './src/**/*.tsx'],
+-    theme: {
+-        extend: {
+-            colors: {
+-                'ty-main': 'var(--main-color)',
+-            },
+-        },
+-    },
+-    plugins: [],
+-};
+Index: apps/web/index.html
+===================================================================
+diff --git a/apps/web/index.html b/apps/web/index.html
+deleted file mode 100644
+--- a/apps/web/index.html	
++++ /dev/null	
+@@ -1,13 +0,0 @@
+-<!doctype html>
+-<html lang="en">
+-    <head>
+-        <meta charset="UTF-8" />
+-        <link rel="icon" href="/favicon.ico" />
+-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+-        <title>Vite App</title>
+-    </head>
+-    <body>
+-        <div id="app"></div>
+-        <script type="module" src="/src/main.ts"></script>
+-    </body>
+-</html>
+Index: apps/web/cypress.config.ts
+===================================================================
+diff --git a/apps/web/cypress.config.ts b/apps/web/cypress.config.ts
+deleted file mode 100644
+--- a/apps/web/cypress.config.ts	
++++ /dev/null	
+@@ -1,8 +0,0 @@
+-import { defineConfig } from 'cypress';
+-
+-export default defineConfig({
+-    e2e: {
+-        specPattern: 'cypress/e2e/**/*.{cy,spec}.{js,jsx,ts,tsx}',
+-        baseUrl: 'http://localhost:4173',
+-    },
+-});
+Index: apps/web/vite.config.ts
+===================================================================
+diff --git a/apps/web/vite.config.ts b/apps/web/vite.config.ts
+deleted file mode 100644
+--- a/apps/web/vite.config.ts	
++++ /dev/null	
+@@ -1,46 +0,0 @@
+-import { fileURLToPath, URL } from 'node:url';
+-
+-import { defineConfig } from 'vite';
+-import vue from '@vitejs/plugin-vue';
+-import vueJsx from '@vitejs/plugin-vue-jsx';
+-import tailwindcss from 'tailwindcss';
+-import autoprefixer from 'autoprefixer';
+-import postcssPresetsEnv from 'postcss-preset-env';
+-
+-// https://vitejs.dev/config/
+-export default defineConfig({
+-    plugins: [vue(), vueJsx()],
+-    resolve: {
+-        alias: {
+-            '@': fileURLToPath(new URL('./src', import.meta.url)),
+-        },
+-    },
+-    css: {
+-        postcss: {
+-            plugins: [
+-                tailwindcss,
+-                autoprefixer,
+-                postcssPresetsEnv({
+-                    browsers: ['> 0.2% and not dead'],
+-                }),
+-            ],
+-        },
+-    },
+-    server: {
+-        port: 80,
+-        host: true,
+-        proxy: {
+-            // https://cn.vitejs.dev/config/#server-proxy
+-            '/dev-api': {
+-                target: 'http://192.168.80.35:8000/api',
+-                changeOrigin: true,
+-                rewrite: (p) => p.replace(/^\/dev-api/, ''),
+-            },
+-            '/dev-ai': {
+-                target: 'http://192.168.80.35:8997',
+-                changeOrigin: true,
+-                rewrite: (p) => p.replace(/^\/dev-ai/, ''),
+-            },
+-        },
+-    },
+-});
+Index: apps/web/cypress/e2e/example.cy.ts
+===================================================================
+diff --git a/apps/web/cypress/e2e/example.cy.ts b/apps/web/cypress/e2e/example.cy.ts
+deleted file mode 100644
+--- a/apps/web/cypress/e2e/example.cy.ts	
++++ /dev/null	
+@@ -1,8 +0,0 @@
+-// https://on.cypress.io/api
+-
+-describe('My First Test', () => {
+-    it('visits the app root url', () => {
+-        cy.visit('/');
+-        cy.contains('h1', 'You did it!');
+-    });
+-});
+Index: apps/web/cypress/e2e/tsconfig.json
+===================================================================
+diff --git a/apps/web/cypress/e2e/tsconfig.json b/apps/web/cypress/e2e/tsconfig.json
+deleted file mode 100644
+--- a/apps/web/cypress/e2e/tsconfig.json	
++++ /dev/null	
+@@ -1,10 +0,0 @@
+-{
+-    "extends": "@vue/tsconfig/tsconfig.dom.json",
+-    "include": ["./**/*", "../support/**/*"],
+-    "compilerOptions": {
+-        "isolatedModules": false,
+-        "target": "es5",
+-        "lib": ["es5", "dom"],
+-        "types": ["cypress"]
+-    }
+-}
+Index: apps/web/cypress/support/e2e.ts
+===================================================================
+diff --git a/apps/web/cypress/support/e2e.ts b/apps/web/cypress/support/e2e.ts
+deleted file mode 100644
+--- a/apps/web/cypress/support/e2e.ts	
++++ /dev/null	
+@@ -1,20 +0,0 @@
+-// ***********************************************************
+-// This example support/index.js is processed and
+-// loaded automatically before your test files.
+-//
+-// This is a great place to put global configuration and
+-// behavior that modifies Cypress.
+-//
+-// You can change the location of this file or turn off
+-// automatically serving support files with the
+-// 'supportFile' configuration option.
+-//
+-// You can read more here:
+-// https://on.cypress.io/configuration
+-// ***********************************************************
+-
+-// Import commands.js using ES2015 syntax:
+-import './commands';
+-
+-// Alternatively you can use CommonJS syntax:
+-// require('./commands')
+Index: apps/web/cypress/support/commands.ts
+===================================================================
+diff --git a/apps/web/cypress/support/commands.ts b/apps/web/cypress/support/commands.ts
+deleted file mode 100644
+--- a/apps/web/cypress/support/commands.ts	
++++ /dev/null	
+@@ -1,39 +0,0 @@
+-/// <reference types="cypress" />
+-// ***********************************************
+-// This example commands.ts shows you how to
+-// create various custom commands and overwrite
+-// existing commands.
+-//
+-// For more comprehensive examples of custom
+-// commands please read more here:
+-// https://on.cypress.io/custom-commands
+-// ***********************************************
+-//
+-//
+-// -- This is a parent command --
+-// Cypress.Commands.add('login', (email, password) => { ... })
+-//
+-//
+-// -- This is a child command --
+-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
+-//
+-//
+-// -- This is a dual command --
+-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
+-//
+-//
+-// -- This will overwrite an existing command --
+-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+-//
+-// declare global {
+-//   namespace Cypress {
+-//     interface Chainable {
+-//       login(email: string, password: string): Chainable<void>
+-//       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
+-//       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
+-//       visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
+-//     }
+-//   }
+-// }
+-
+-export {};
+Index: apps/web/cypress/fixtures/example.json
+===================================================================
+diff --git a/apps/web/cypress/fixtures/example.json b/apps/web/cypress/fixtures/example.json
+deleted file mode 100644
+--- a/apps/web/cypress/fixtures/example.json	
++++ /dev/null	
+@@ -1,5 +0,0 @@
+-{
+-    "name": "Using fixtures to represent data",
+-    "email": "hello@cypress.io",
+-    "body": "Fixtures are a great way to mock data for responses to routes"
+-}
+Index: apps/web/vue-shims.d.ts
+===================================================================
+diff --git a/apps/web/vue-shims.d.ts b/apps/web/vue-shims.d.ts
+deleted file mode 100644
+--- a/apps/web/vue-shims.d.ts	
++++ /dev/null	
+@@ -1,5 +0,0 @@
+-declare module '*.vue' {
+-    import type { DefineComponent } from 'vue';
+-    const component: DefineComponent<NonNullable<unknown>, NonNullable<unknown>, any>;
+-    export default component;
+-}
+diff --git a/apps/web/node_modules/@m/utils/src/request/type.ts b/apps/web/node_modules/@m/utils/src/request/type.ts
+deleted file mode 100644
+diff --git a/apps/web/node_modules/@m/utils/src/request/index.ts b/apps/web/node_modules/@m/utils/src/request/index.ts
+deleted file mode 100644
+diff --git a/apps/web/node_modules/@m/utils/src/request/utils.ts b/apps/web/node_modules/@m/utils/src/request/utils.ts
+deleted file mode 100644
+diff --git a/apps/web/node_modules/@m/style/src/index.ts b/apps/web/node_modules/@m/style/src/index.ts
+new file mode 100644
+diff --git a/apps/web/node_modules/@m/style/src/index.css b/apps/web/node_modules/@m/style/src/index.css
+deleted file mode 100644
+diff --git a/apps/web/node_modules/@m/style/src/tailwind/tailwind.css b/apps/web/node_modules/@m/style/src/tailwind/tailwind.css
+deleted file mode 100644
+diff --git a/apps/web/node_modules/@m/style/src/var/var.css b/apps/web/node_modules/@m/style/src/var/var.css
+deleted file mode 100644
+diff --git a/apps/web/node_modules/@m/ui/index.html b/apps/web/node_modules/@m/ui/index.html
+new file mode 100644
+diff --git a/apps/web/.env.production b/apps/web/.env.production
+deleted file mode 100644
+index 9324e38587577f7c3c13a0d8ad3f0f853bbce91d..0000000000000000000000000000000000000000
+GIT binary patch
+literal 0
+Hc$@<O00001
+
+diff --git a/apps/web/public/favicon.ico b/apps/web/public/favicon.ico
+deleted file mode 100644
+index df36fcfb72584e00488330b560ebcf34a41c64c2..0000000000000000000000000000000000000000
+GIT binary patch
+literal 0
+Hc$@<O00001
+
+diff --git a/apps/web/.env.development b/apps/web/.env.development
+deleted file mode 100644
+index da6b479545ca1feaf9e3bba0ced2641bbf61c2a5..0000000000000000000000000000000000000000
+GIT binary patch
+literal 0
+Hc$@<O00001
+
+diff --git a/apps/web/.env.test b/apps/web/.env.test
+deleted file mode 100644
+index 59849087f173addca7f8a92590479528ccc68d0a..0000000000000000000000000000000000000000
+GIT binary patch
+literal 0
+Hc$@<O00001
+

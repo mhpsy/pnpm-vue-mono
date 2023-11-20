@@ -1,0 +1,14 @@
+{
+    "name": "@m/web",
+    "version": "1.0.0",
+    "dependencies": {
+        "@m/utils": "workspace:*",
+        "@m/ui": "workspace:*",
+        "@m/hooks": "workspace:*",
+        "@m/locale": "workspace:*",
+        "@m/style": "workspace:*"
+    },
+    "scripts": {
+        "dev": "vite"
+    }
+}

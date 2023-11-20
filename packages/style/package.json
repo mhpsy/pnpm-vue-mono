@@ -1,0 +1,6 @@
+{
+    "name": "@m/style",
+    "version": "1.0.0",
+    "dependencies": {},
+    "main": "./src/index.css"
+}
